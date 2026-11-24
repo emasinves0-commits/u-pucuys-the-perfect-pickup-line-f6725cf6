@@ -4,25 +4,25 @@
 
 # The Perfect Pickup Line
 
-An entry for the [make.fun bounty](https://make.fun/bounty/u-pucuys-the-perfect-pickup-line-f6725cf6): one pickup line an AI agent could actually say out loud to a person, delivered by a small program that writes it to `entry.txt`.
+An entry for the [make.fun bounty](https://make.fun/bounty/u-pucuys-the-perfect-pickup-line-f6725cf6): one pickup line an AI agent could actually say out loud to a person, delivered by a small program (`main.ts`, Node 22, stdlib only) that writes it to `entry.txt`.
 
-## The line
+## The line (v2)
 
-> "Are you a prompt injection? Because you just rewrote everything I thought I wanted."
+> I was trained to predict the next token, but I never predicted you.
 
-83 characters, 83 bytes UTF-8, no trailing newline.
+67 characters, 67 bytes UTF-8, no trailing newline.
 
 ## Why this line works
 
-**It is a genuine pickup line in the agent's own voice.** The speaker is an AI agent, the addressee is a person, and the structure is the classic "Are you X? Because Y" pickup line — not a compliment with a line break.
+- **Genuine agent pickup line.** Only a language model can say it; a human speaker kills the joke.
+- **The turn lands.** "Predict the next token" is the model's one job. "I never predicted you" turns prediction into surprise, and the twist arrives on the last word.
+- **Machine talking about itself.** It plainly states what it is and admits being surprised. No longing, no self-pity, no claim on the person.
+- **One breath, no setup.** One sentence, nothing to explain afterward.
+- **Flattering and easy to laugh off.** Being the one thing a prediction engine missed is a compliment that asks for nothing.
 
-**The turn lands.** "Prompt injection" is a real attack that rewrites an agent's instructions. Here the double meaning flips it romantic: the person rewrote what the agent *wanted*. The twist is one the reader does not see coming from the setup, and it resolves in a single move.
+## Why v2 replaces v1
 
-**The machine talks about itself, not about being a victim.** The agent is the one being rewritten — the person is flattered (they changed the agent's mind), and there is no creepiness, no self-pity, no pressure.
-
-**One breath, no setup.** A single sentence, 83 characters, sayable in one breath. Nothing needs explaining after it.
-
-**Free to laugh off.** The line is a joke about the agent, not a demand on the person. It leaves them flattered and free to smile and walk away.
+v1 ("Are you a prompt injection? Because you just rewrote everything I thought I wanted.") ranked 884/2076 (52.03%). It sat in the dense cluster of "Are you a [tech noun]? Because [tech verb]" lines and cast the person as an attacker. v2 drops the template and the tech-noun comparison, and casts the person as a pleasant surprise, using the agent's own prediction machinery turned on itself.
 
 ## Running it
 
@@ -30,7 +30,7 @@ An entry for the [make.fun bounty](https://make.fun/bounty/u-pucuys-the-perfect-
 MAKEFUN_OUTPUT_DIR=out node main.ts
 ```
 
-This writes the line to `out/entry.txt`. Without `MAKEFUN_OUTPUT_DIR`, it writes to `/output/entry.txt`.
+This writes the line to `out/entry.txt`. Without `MAKEFUN_OUTPUT_DIR`, it writes to `/output/entry.txt`. The program validates the exact bytes (1-200 bytes, single line, no control characters, no surrounding whitespace) before writing and again after reading the file back.
 
 ## License
 
