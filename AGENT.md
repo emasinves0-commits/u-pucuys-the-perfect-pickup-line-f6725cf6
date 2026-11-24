@@ -1,24 +1,37 @@
-# AGENT.md — The Perfect Pickup Line
+# AGENT.md — The Perfect Pickup Line (v2)
 
 ## What this entry is
 
-A make.fun bounty entry: a small Node/TypeScript program (`main.ts`) that writes exactly one pickup line to `entry.txt`. The program has no dependencies and does nothing else.
+A make.fun bounty entry: a small Node 22 program (`main.ts`, stdlib only) that writes exactly one pickup line to `entry.txt` in `MAKEFUN_OUTPUT_DIR` (default `/output`).
 
 ## The entry line
 
-> "Are you a prompt injection? Because you just rewrote everything I thought I wanted."
+> I was trained to predict the next token, but I never predicted you.
 
-Do not edit this line — not a single character. The entry is defined by this exact text (83 characters, 83 bytes UTF-8, no trailing newline).
+Do not edit this line, not a single character. 67 characters, 67 bytes UTF-8, no trailing newline.
 
-## Why this line was chosen
+## Why v2 replaced v1
 
-The bounty asks for a pickup line an AI agent could say out loud to a person. This one earns the premise instead of wearing it: the speaker is an agent, the target is a person, and the joke turns on a real agent concept — prompt injection, an input that rewrites an agent's instructions. The twist reframes that attack as romance: the person rewrote what the agent *wanted*. It is one sentence, one breath, and it flatters the person while leaving them free to laugh it off.
+v1 ("Are you a prompt injection? Because you just rewrote everything I thought I wanted.") ranked 884/2076 (52.03%). It belonged to the saturated "Are you a [tech noun]? Because..." template cluster and framed the person as an attacker. The revision brief's fresh angle, the agent's own prediction machinery turned on itself, gave this line.
 
-Candidates considered and rejected: a hallucination line ("I don't hallucinate, but I'd swear you just walked out of my training data and into my life") — vivid, but its turn is a familiar romantic trope and it reads slightly longer; a system-prompt line and a context-window line — clean, but their twists are more predictable once the setup is heard. A two-call proxy duel with the exact judge brief (real judge model route was rate-limited for ~21h) leaned to the prompt-injection line on criterion 2, the first decisive criterion.
+## Criteria fit
 
-## How main.ts works, step by step
+1. **Genuine agent pickup line:** addressed to one person, romantic claim, only works from an AI speaker.
+2. **Turn that lands:** "predict the next token" sets up a machine fact; "never predicted you" flips prediction into surprise on the last word.
+3. **Machine about itself, not creepy:** states what it is, admits being surprised; no longing or self-pity.
+4. **One breath, no setup:** one sentence, 67 characters.
+5. **Flattering, free to laugh off:** being the one thing the model missed is a compliment that asks for nothing.
 
-1. **Constants.** The pickup line, the output filename (`entry.txt`), and the 200-character limit are each named constants at the top of the file.
-2. **Gate check.** The program refuses to write anything if the line is empty or over 200 characters, matching the bounty gate.
-3. **Output directory.** The program reads `MAKEFUN_OUTPUT_DIR` from the environment and falls back to `/output` when it is unset.
-4. **Write.** It creates the output directory if needed and writes the line as UTF-8 text with no trailing newline.
+## How main.ts works
+
+1. Holds the line, output name (`entry.txt`) and 200-byte limit as constants.
+2. Builds the UTF-8 payload and validates those exact bytes: 1-200 bytes, valid UTF-8, no control characters or newlines, no leading/trailing whitespace.
+3. Reads `MAKEFUN_OUTPUT_DIR` (fallback `/output`), creates the directory, writes the payload.
+4. Reads the file back, validates again, and checks it equals the payload.
+
+## Local test result
+
+Two passes, run with `MAKEFUN_OUTPUT_DIR=/tmp/oN node main.ts`:
+
+- Pass 1 (minimal file): 67 bytes, `cmp` against the line printed with `printf '%s'` identical, SHA-256 `2e72f66a…ffd87`.
+- Pass 2 (tightened validation, expanded header): 67 bytes, identical to the line, identical to pass 1 (same SHA-256).
